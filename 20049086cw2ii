@@ -1,0 +1,345 @@
+#!/bin/bash
+
+fName=$1
+userId=$2
+selection=('JL' 'AY' 'FM' 'DH' 'KC')
+redColour="\033[31m"
+greenColour="\033[0;32m"
+yellowColour="\033[0;33m"
+purpleColour='\033[1;35m'
+noColour="\033[0m"
+
+#Function to validate Nmae and UserId
+function validUser() {
+	if [ -z $fName ] || [ -z $userId ]
+	then
+		echo -e "${redColour}"
+		echo
+		echo "Program can't execute without username and Id Hint:fileName _name_ _ID_"
+		echo
+		echo -e "${noColour}"
+	else
+		user
+	fi
+}
+
+#Function to validae user secret key
+function user() {
+	echo -e "Enter your Secret key to access: \c"
+	read -s key
+	case $key in
+		[1][2][3][4])
+			echo
+			welcome
+			;;
+		*)
+			a=2
+			until [ $a -eq 0 ]
+			do
+				echo -e "${redColour}"
+				echo "Please Enter correct key. $a attempt remaining"
+				echo -e "${noColour}"
+				echo -e "Enter the secreat key again: \c"
+				read -s newKey
+				# Switch case
+				case $newKey in
+					[1][2][3][4])
+						echo
+						welcome
+						;;
+					*)
+						echo
+						;;
+				esac
+				a=$((a-1))
+			done
+			;;
+	esac	
+}
+
+#welcome function
+function welcome() {
+	echo -e "${greenColour}"
+	figlet -c "Welcome User"
+	figlet -c "UssrId:$userId Name:$fName"
+	echo -e "${noColour}"
+	date '+DATE: %m/%d/%y%nTIME:%H/%M/%S'
+	musicBand
+}
+
+#Function to dispalay band name
+function musicBand() {
+	echo -e "${purpleColour}"
+	echo "Guess which one is best music Band?"
+	echo "++++++++++++++++++++++++++++++++++++++++++++"
+	echo "+    Band Code         |    Band Name      +"
+	echo "++++++++++++++++++++++++++++++++++++++++++++"
+	echo "+    BEA               |    Beatles        +"
+	echo "+    AD                |    AC/DC          +"
+	echo "+    QUE               |    Queen          +"
+	echo "+    BLO               |    Blondie        +"
+	echo "+    NIR               |    Nirvana        +"
+    echo "++++++++++++++++++++++++++++++++++++++++++++"
+	echo -e "${noColour}"
+
+	#InFunction of Choosing Favourate Band
+	function bands() {
+		echo -e "Choose which one is mine favourate band: \c"
+		read bCode		
+		#case statement
+		case $bCode in
+			[B][E][A])
+				echo -e "${greenColour}"
+				echo "******************** Beatles *********************"
+				echo "The Beatles where an English rock band, formed in Liverpool in 1960, that compried Jhon Lennon, Paul McCartney, George Garridon and Ringo Starr. They are regarded as the most influential band if all time."
+				echo -e "${noColour}"
+				#function calling
+				selectone
+				;;
+			[A][D])
+				echo -e "${yellowColour}"
+				echo "This is not my favourate band choose correct one."
+				echo -e "${noColour}"
+				bands
+				;;
+			[Q][U][E])
+				echo -e "${yellowColour}"
+				echo "This is not my favourate band choose correct one."
+				echo -e "${noColour}"
+				bands
+				;;
+			[B][L][O])
+				echo -e "${yellowColour}"
+				echo "This is not my favourate band choose correct one."
+				echo -e "${noColour}"
+				bands
+				;;
+			[N][I][R])
+				echo -e "${yellowColour}"
+				echo "This is not my favourate band choose correct one."
+				echo -e "${noColour}"
+				bands
+				;;
+			*)
+				echo -e "${redColour}"
+				echo "Please enter valid key word ie,BEA "
+				echo -e "${noColour}"
+				bands
+				;;
+		esac
+	}
+	bands
+}
+
+#Function to dispaly the table of Band Members
+function selectone() {
+	echo -e "${purpleColour}"
+	echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+	echo "+   		Fivestar Band member Code  |   		 Band Member     	+"
+	echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+	echo "+    			JL                 |   		 Jhon Lennon            +"
+	echo "+    			AY     	       	   |    	 Angus Young            +"
+	echo "+    			FM      	   |    	 Freddie Mercury        +"
+	echo "+    			DH      	   |    	 Debbie Harry           +"
+	echo "+    			KC       	   |    	 Kurt Cobain            +"
+    echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+	echo -e "${noColour}"
+	ola
+}
+
+#Function for the selection of three band member.
+function ola() {
+	echo -e "Choose any three band members using space ie,(JL AY FM): \c"
+	read selectionFirst selectionSecond selectionThird selectionForth
+
+	#first selection validation.
+	if [ -z $selectionForth ]
+	then
+		while [ -z $selectionFirst ] 
+		do
+			echo -e "${yellowColour}"
+			echo "First selection shouldn't be empty."
+			echo -e "${noColour}"
+			ola
+		done
+		
+		if [ $selectionFirst == ${selection[0]} ] || [ $selectionFirst == ${selection[1]} ] || [ $selectionFirst == ${selection[2]} ] || [ $selectionFirst == ${selection[3]} ] || [ $selectionFirst == ${selection[4]} ]
+		then
+			secondSelection
+		else
+			echo -e "${redColour}"
+			echo "**********ERROR********************"
+			echo "Invalid Input on first selection."
+			echo "For Type JL for Jhon Lennon4, AY for Angus Young, FM for Freddie Murcury, DH for Deddie Harry and KC for Kurt Cobain"
+			echo -e "${noColour}"
+			ola
+		fi
+	else
+		echo -e "${yellowColour}"
+		echo "You can't pick four member name"
+		echo -e "${noColour}"
+		ola
+	fi
+}
+
+#Function of second selection and validation.
+function secondSelection() {
+	if [ -z $selectionSecond ] 
+	then
+		echo -e "${yellowColour}"
+		echo "Second selection shouldn't be empty."
+		echo -e "${noColour}"
+		ola
+	fi
+	
+	while [ $selectionFirst == $selectionSecond ]
+	do
+		echo -e "${yellowColour}"
+		echo "First selection and Second Selection Should not be same."
+		echo -e "${noColour}"
+		ola
+	done
+
+	if [ $selectionSecond == ${selection[0]} ] || [ $selectionSecond == ${selection[1]} ] || [ $selectionSecond == ${selection[2]} ] || [ $selectionSecond == ${selection[3]} ] || [ $selectionSecond == ${selection[4]} ]
+	then
+		thirdSelection
+	else
+		echo -e "${redColour}"
+		echo "**********ERROR********************"
+		echo "Invalid input on second Selection."
+		echo "For Type JL for Jhon Lennon4, AY for Angus Young, FM for Freddie Murcury, DH for Deddie Harry and KC for Kurt Cobain"
+		echo -e "${noColour}"
+		ola
+	fi
+
+}
+
+#Function of third selection and validation
+function thirdSelection() {
+	while [ -z $selectionThird ] 
+	do
+		echo -e "${yellowColour}"
+		echo "Third selection shouldn't be empty."
+		echo -e "${noColour}"
+		ola
+	done
+
+	while [ $selectionFirst == $selectionThird ]
+	do
+		echo -e "${yellowColour}"
+		echo "First selection and Third Selection Should not be same."
+		echo -e "${noColour}"
+		ola
+	done
+
+	while [ $selectionSecond == $selectionThird ]
+	do
+		echo -e "${yellowColour}"
+		echo "Second selection and Third selection should not be same."
+		echo -e "${noColour}"
+		ola
+	done
+
+	if [ $selectionThird == ${selection[0]} ] || [ $selectionThird == ${selection[1]} ] || [ $selectionThird == ${selection[2]} ] || [ $selectionThird == ${selection[3]} ] || [ $selectionThird == ${selection[4]} ]
+	then
+		chooseOne
+	else
+		echo -e "${redColour}"
+		echo "**********ERROR********************"
+		echo "Invalid Input on Third selection."
+		echo "For Type JL for Jhon Lennon, AY for Angus Young, FM for Freddie Murcury, DH for Deddie Harry and KC for Kurt Cobain"
+		echo -e "${noColour}"
+		ola
+	fi
+}
+
+#Function of choosing band member
+function chooseOne() {
+	PS3="Select any singer Name from Option: "
+	select var in $selectionFirst $selectionSecond $selectionThird
+	do
+		while [ -z $var ]
+		do
+			echo -e "${redColour}"
+			echo "*******Please Enter valid Input**************"
+			echo "Choose value 1 for $selectionFirst 2 for $selectionSecond and 3 for $selectionThird."
+			echo -e "${noColour}"
+			chooseOne
+		done
+
+		if [ $var == $selectionFirst ] || [ $var == $selectionSecond ] || [ $var == $selectionThird ]
+		then
+			while [ $var == "JL" ]
+			do
+				echo -e "${greenColour}"
+				cat JL
+				echo -e "${noColour}"
+				endFunction
+			done
+
+			if [ $var == "AY" ]
+			then
+				echo -e "${greenColour}"
+				cat AY
+				echo -e "${noColour}"
+				endFunction
+			elif [ $var == "FM" ]
+			then
+				echo -e "${greenColour}"
+				cat FM
+				echo -e "${noColour}"
+				endFunction
+			elif [ $var == "DH" ]
+			then
+				echo -e "${yellowColour}"
+				echo "DH (Debbie Harry) band member File is not available"
+				echo -e "${noColour}"
+				musicBand
+			elif [ $var == "KC" ]
+			then	
+				echo -e "${yellowColour}"
+				echo "KC (Kurt Cobain) band member file is not available"
+				echo -e "${noColour}"
+				musicBand
+			else
+				echo -e "${redColour}"
+				echo "Choose value 1 for $selectionFirst, 2 for $secondSelection and 3 for $thirdSelection."
+				echo -e "${noColour}"
+				chooseOne
+			fi
+		fi
+	done
+}
+
+#Program exit Function
+function endFunction() {
+	echo -e "Do you want to continue(Yes/No): \c "
+	read opt
+	
+	while [ -z $opt ]
+	do
+		echo -e "${redColour}"
+		echo "-------------------Invalid-Input---------------------"
+		echo "Type "Yes" for Continue and "No" for exit the program"
+		echo -e "${noColour}"
+		endFunction
+	done
+
+	if [ $opt == "Yes" ]
+	then
+		musicBand
+	elif [ $opt == "No" ]
+	then
+		echo -e "${greenColour}"
+		figlet "Program Exit"
+		 echo -e "${noColour}"
+		exit
+	else
+		echo -e "${redColour}"
+		echo "-------------------Invalid-Input---------------------"
+		echo "Type "Yes" for Continue and "No" for exit the program"
+		echo -e "${noColour}"
+		endFunction
+	fi
+}
+validUser
